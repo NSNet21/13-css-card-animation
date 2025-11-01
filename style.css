@@ -1,0 +1,367 @@
+:root.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+:root[data-theme="light"] {
+  --text: rgb(17, 11, 20);
+  --button-outline: rgb(17, 11, 20, 0.4);
+  --background: rgb(249, 244, 251);
+  --background-button: rgba(223, 223, 223, 0.7);
+  --primary: rgb(94, 31, 117);
+  --secondary: rgb(199, 111, 231);
+  --accent: rgb(170, 20, 225);
+  --accent-text-shadow: rgb(170, 20, 225, 0.4);
+  --accent-after-shadow: rgb(170, 20, 225, 0);
+}
+:root[data-theme="dark"] {
+  --text: rgb(241, 235, 244);
+  --button-outline: rgb(241, 235, 244, 0.7);
+  --background: rgb(9, 4, 11);
+  --background-button: rgba(97, 86, 101, 0.6);
+  --primary: rgb(201, 138, 224);
+  --secondary: rgb(112, 24, 144);
+  --accent: rgb(181, 30, 235);
+  --accent-text-shadow: rgb(181, 30, 235, 0.6);
+  --accent-after-shadow: rgb(181, 30, 235, 0.1);
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style-type: none;
+  outline: none;
+  border: none;
+}
+
+body {
+  font-size: 80%;
+  height: 100vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: var(--background);
+  position: relative;
+  overflow: hidden;
+}
+
+body::after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to top left,
+    var(--accent-after-shadow) 0%,
+    var(--background) 75%
+  );
+  transition: background 0.5s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* theme swap button styling */
+#themeSwap {
+  position: fixed;
+  right: 30px;
+  top: 15px;
+  width: 55px;
+  height: 55px;
+  background-color: var(--background-button);
+  outline: 3px solid var(--button-outline);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+#themeSwap:hover {
+  box-shadow: 0 0 100px var(--accent);
+}
+
+#themeSwap:hover i {
+  text-shadow: 0 0 40px var(--accent-text-shadow);
+}
+
+#themeSwap i {
+  font-size: 2.15rem;
+  color: var(--button-outline);
+  opacity: 1;
+  transition: transform 0.5s ease, opacity 0.6s ease,
+    text-shadow 0.6s ease-in-out;
+}
+
+#themeSwap i.fade-icon {
+  transform: rotate(180deg) scale(0.8);
+  opacity: 0;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+}
+
+.header-text {
+  color: var(--text);
+  position: fixed;
+  top: clamp(10px, calc(0vh + 10px), 30px);
+  margin: auto;
+  font-size: 2rem;
+  opacity: 0.1;
+  font-family: "Noto Sans JP", sans-serif;
+  transition: all 0.9s ease-in-out;
+  cursor: default;
+}
+
+.header-text:hover {
+  color: var(--accent);
+  text-shadow: 0 0 45px var(--accent-text-shadow);
+  opacity: 0.6;
+}
+
+.card-container {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+/* card styling */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 90px;
+  height: 100%;
+  border-radius: 2rem;
+  background-color: var(--background);
+  position: relative;
+  align-items: flex-end;
+  transition: width 0.4s ease, filter 0.9s ease-in-out;
+  box-shadow: 0 10px 30px -5px var(--secondary);
+  overflow: hidden;
+}
+
+/* hover on card not in the description */
+.card:hover:not(:has(.description:hover)) {
+  filter: brightness(150%);
+}
+
+.card.active {
+  width: 400px;
+}
+
+.card .description {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 12px;
+  white-space: nowrap;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  cursor: pointer;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 5px 10px rgb(0, 0, 0, 0.5);
+}
+
+.card .number {
+  display: flex;
+  flex-shrink: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 66px;
+  height: 66px;
+  background-color: var(--primary);
+  background-repeat: no-repeat;
+  box-shadow: 2px 3px 15px var(--secondary);
+}
+
+/* number indicator styling */
+.card .number span {
+  color: var(--background);
+}
+
+/* text description styling */
+.card .description h3 {
+  color: rgb(0, 0, 0);
+  font-size: 1.25rem;
+  font-weight: 900;
+  flex-shrink: 0;
+  transition: all 0.5s ease-in-out;
+  font-family: "Noto Serif JP", serif;
+  margin: 5px;
+}
+
+.card .description p:not(.number) {
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.5s ease-in-out;
+}
+
+/* text description on hover styling */
+.card .description:hover h3,
+.card .description:hover p:not(.number) {
+  filter: brightness(125%);
+  text-shadow: 0 0 30px white;
+}
+
+.card1 {
+  background-image: url("images/火の少年.jpg");
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.card2 {
+  background-image: url("images/呪われた少女.jpg");
+  background-size: cover;
+  background-position: left top;
+}
+
+.card.card2 h3 {
+  color: white;
+  font-weight: 500;
+}
+
+.card.card2 .description p:not(.number) {
+  color: white;
+  font-weight: 200;
+}
+
+.card3 {
+  background-image: url("images/狂気の少女幻想.jpg");
+  background-size: cover;
+  background-position: left center;
+}
+
+.card.card3 h3 {
+  color: white;
+  font-weight: 500;
+}
+
+.card.card3 .description p:not(.number) {
+  color: white;
+  font-weight: 200;
+}
+
+.card4 {
+  background-image: url("images/火の少女戦士.jpg");
+  background-size: cover;
+  background-position: right center;
+}
+
+.card5 {
+  background-image: url("images/鬼の男子.jpg");
+  background-size: cover;
+  background-position: right center;
+}
+
+.card.card5 h3 {
+  color: white;
+  font-weight: 500;
+}
+
+.card.card5 .description p:not(.number) {
+  color: white;
+  font-weight: 200;
+}
+
+.card6 {
+  background-image: url("images/魔性の女.jpg");
+  background-size: cover;
+  background-position: left center;
+}
+
+.card.card6 h3 {
+  color: white;
+  font-weight: 500;
+}
+
+.card.card6 .description p:not(.number) {
+  color: white;
+  font-weight: 200;
+}
+
+.card7 {
+  background-image: url("images/ドクロ爆弾の少女.jpg");
+  background-size: cover;
+  background-position: right top 25%;
+}
+
+.card.card7 h3 {
+  color: white;
+  font-weight: 500;
+}
+
+.card.card7 .description p:not(.number) {
+  color: white;
+  font-weight: 200;
+}
+
+/* media query for 900px screen or less width */
+@media only screen and (max-width: 900px) {
+  .header-text {
+    /* ย่อ - ขยายตามหน้าจอ */
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
+
+  #themeSwap {
+    top: calc(100% - 100px);
+    right: 25px;
+    width: 50px;
+    height: 50px;
+  }
+
+  #themeSwap i {
+    font-size: 1.85rem;
+  }
+
+  .card-container {
+    height: 250px;
+  }
+
+  .card {
+    width: 40px;
+    border-radius: 0.85rem;
+  }
+
+  .card.active {
+    width: 250px;
+  }
+
+  .card .description {
+    padding: 0 5px;
+    gap: 10px;
+  }
+
+  .card .number {
+    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+  }
+
+  .card .description h3 {
+    font-size: 0.85rem;
+  }
+
+  .card .description p:not(.number) {
+    font-size: 0.52rem;
+  }
+}
