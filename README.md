@@ -34,8 +34,9 @@ This project demonstrates:
 ---
 
 ## 📸 Preview
-> (You can replace this with your screenshot or GIF preview)
-![Preview Screenshot](./asset-preview/preview.jpeg)
+
+![Dark Preview](./asset-preview/preview.jpeg)
+![Light Preview](./asset-preview/ligt-preview.jpeg)
 
 ---
 
